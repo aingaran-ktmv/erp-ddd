@@ -1,0 +1,10 @@
+model_singular: Student
+model_plural: Students
+domain: Education
+columns:
+  first_name: type=string
+  last_name: type=string
+  email: type=string, index=unique
+  date_of_birth: type=date
+  enrollment_status: type=string
+  school_id: type=foreignId, relationship_to=School
