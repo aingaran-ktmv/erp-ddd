@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ tab: 'schools' }" class="h-full bg-gray-50">
+  <head>
+    <meta charset="UTF-8" />
+    <title>School Domain Admin Prototype</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js CDN -->
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <!-- Heroicons CDN -->
+    <script src="https://unpkg.com/heroicons@2.0.13/dist/heroicons.min.js"></script>
+  </head>
+  <body class="h-full flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r flex flex-col min-h-screen">
+      <div class="px-6 py-4 border-b">
+        <span class="text-xl font-bold text-blue-700">School Domain</span>
+      </div>
+      <nav class="flex-1 px-2 py-4 space-y-2">
+        <button
+          @click="tab='schools'"
+          :class="tab==='schools' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
+          class="w-full flex items-center px-4 py-2 rounded transition"
+        >
+          <!-- Heroicon: Academic Cap -->
+          <svg
+            class="w-5 h-5 mr-3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 14.25v6.25m0 0c-4.418 0-8-1.79-8-4V10.5m8 10V14.25m0 6.25c4.418 0 8-1.79 8-4V10.5m-8 10V14.25m0 0L3.5 10.5m8.5 3.75l8.5-3.75M12 3l9.5 7.5-9.5 3.75L2.5 10.5 12 3z"
+            />
+          </svg>
+          Schools
+        </button>
+        <button
+          @click="tab='school_visions'"
+          :class="tab==='school_visions' ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
+          class="w-full flex items-center px-4 py-2 rounded transition"
+        >
+          <!-- Heroicon: Eye -->
+          <svg
+            class="w-5 h-5 mr-3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274.857-.67 1.67-1.176 2.414M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+          School Visions
+        </button>
+      </nav>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 p-8 overflow-y-auto">
+      <!-- Schools Table View -->
+      <section x-show="tab==='schools'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Schools</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <!-- Heroicon: Plus -->
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  School No
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name (EN)
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Type
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Category
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Division
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">SCH-001</td>
+                <td class="px-6 py-4 whitespace-nowrap">Central College</td>
+                <td class="px-6 py-4 whitespace-nowrap">1AB</td>
+                <td class="px-6 py-4 whitespace-nowrap">National</td>
+                <td class="px-6 py-4 whitespace-nowrap">Colombo</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">SCH-002</td>
+                <td class="px-6 py-4 whitespace-nowrap">Royal School</td>
+                <td class="px-6 py-4 whitespace-nowrap">1C</td>
+                <td class="px-6 py-4 whitespace-nowrap">Province</td>
+                <td class="px-6 py-4 whitespace-nowrap">Kandy</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800"
+                    >Inactive</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ...more rows... -->
+            </tbody>
+          </table>
+        </div>
+        <!-- Form View (Two-column) -->
+        <div class="mt-10">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit School</h3>
+          <form class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >School No</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="e.g. SCH-001"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Census No</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="e.g. CEN-123"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >School Name (EN)</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="English Name"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >School Name (TA)</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Tamil Name"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >School Name (SI)</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Sinhala Name"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >School Type</label
+                >
+                <select class="w-full border-gray-300 rounded px-3 py-2">
+                  <option>1AB</option>
+                  <option>1C</option>
+                  <option>type21</option>
+                  <option>type2</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >School Category</label
+                >
+                <select class="w-full border-gray-300 rounded px-3 py-2">
+                  <option>National</option>
+                  <option>Province</option>
+                  <option>Private</option>
+                  <option>SemiGovernment</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Division</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Division"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Zone</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Zone"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >District</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="District"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Province</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Province"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Address</label
+                >
+                <textarea
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  rows="2"
+                  placeholder="Address"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Phone</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Phone"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Email"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Website</label
+                >
+                <input
+                  type="url"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Website"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Established Year</label
+                >
+                <input
+                  type="number"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="e.g. 1980"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Geo Latitude</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Latitude"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Geo Longitude</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Longitude"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Map URL</label
+                >
+                <input
+                  type="url"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Map URL"
+                />
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <!-- School Visions Table View -->
+      <section x-show="tab==='school_visions'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">School Visions</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <!-- Heroicon: Plus -->
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  School
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Year
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Vision (EN)
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Mission (EN)
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Motto (EN)
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Logo
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">Central College</td>
+                <td class="px-6 py-4 whitespace-nowrap">2024</td>
+                <td class="px-6 py-4 whitespace-nowrap">To be the best...</td>
+                <td class="px-6 py-4 whitespace-nowrap">Empower students...</td>
+                <td class="px-6 py-4 whitespace-nowrap">Knowledge is Power</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <img
+                    src="https://via.placeholder.com/32"
+                    alt="Logo"
+                    class="h-8 w-8 rounded"
+                  />
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ...more rows... -->
+            </tbody>
+          </table>
+        </div>
+        <!-- Form View (Single-column) -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">
+            Create / Edit School Vision
+          </h3>
+          <form class="bg-white shadow rounded-lg p-6">
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >School</label
+                >
+                <select class="w-full border-gray-300 rounded px-3 py-2">
+                  <option>Central College</option>
+                  <option>Royal School</option>
+                  <!-- ... -->
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Year</label
+                >
+                <input
+                  type="number"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="e.g. 2024"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Vision (EN)</label
+                >
+                <textarea
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  rows="2"
+                  placeholder="Vision in English"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Vision (TA)</label
+                >
+                <textarea
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  rows="2"
+                  placeholder="Vision in Tamil"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Vision (SI)</label
+                >
+                <textarea
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  rows="2"
+                  placeholder="Vision in Sinhala"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Mission (EN)</label
+                >
+                <textarea
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  rows="2"
+                  placeholder="Mission in English"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Mission (TA)</label
+                >
+                <textarea
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  rows="2"
+                  placeholder="Mission in Tamil"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Mission (SI)</label
+                >
+                <textarea
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  rows="2"
+                  placeholder="Mission in Sinhala"
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Motto (EN)</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Motto in English"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Motto (TA)</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Motto in Tamil"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Motto (SI)</label
+                >
+                <input
+                  type="text"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Motto in Sinhala"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Logo URL</label
+                >
+                <input
+                  type="url"
+                  class="w-full border-gray-300 rounded px-3 py-2"
+                  placeholder="Logo URL"
+                />
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

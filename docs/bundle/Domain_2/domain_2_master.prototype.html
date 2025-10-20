@@ -1,0 +1,2682 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ tab: 'users' }" class="h-full bg-gray-50">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Master Data Admin Prototype</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js CDN -->
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+    <!-- Heroicons CDN -->
+    <script src="https://unpkg.com/heroicons@2.0.13/dist/heroicons.min.js"></script>
+  </head>
+  <body class="h-full flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r flex flex-col min-h-screen">
+      <div class="px-6 py-4 border-b">
+        <span class="text-xl font-bold text-blue-700">Master Data</span>
+      </div>
+      <nav class="flex-1 px-2 py-4 space-y-2">
+        <template
+          x-for="item in [
+                {id:'users', label:'Users', icon:'user-group'},
+                {id:'departments', label:'Departments', icon:'building-library'},
+                {id:'subjects', label:'Subjects', icon:'book-open'},
+                {id:'sections', label:'Sections', icon:'rectangle-group'},
+                {id:'subsections', label:'Subsections', icon:'rectangle-stack'},
+                {id:'grades', label:'Grades', icon:'academic-cap'},
+                {id:'classes', label:'Classes', icon:'presentation-chart-bar'},
+                {id:'staff', label:'Staff', icon:'user'},
+                {id:'students', label:'Students', icon:'users'},
+                {id:'posts', label:'Posts', icon:'identification'},
+                {id:'resources', label:'Resources', icon:'cube'},
+                {id:'clubs', label:'Clubs', icon:'sparkles'}
+            ]"
+          :key="item.id"
+        >
+          <button
+            @click="tab=item.id"
+            :class="tab===item.id ? 'bg-blue-100 text-blue-700' : 'text-gray-700 hover:bg-gray-100'"
+            class="w-full flex items-center px-4 py-2 rounded transition"
+          >
+            <svg
+              x-show="item.icon==='user-group'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-5.13a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='building-library'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 21V7a2 2 0 012-2h14a2 2 0 012 2v14M3 21h18M3 21v-2a2 2 0 012-2h14a2 2 0 012 2v2"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='book-open'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 6V4m0 2v2m0-2c-4.418 0-8 1.79-8 4v8a2 2 0 002 2h12a2 2 0 002-2v-8c0-2.21-3.582-4-8-4z"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='rectangle-group'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <rect width="6" height="6" x="3" y="3" rx="1" />
+              <rect width="6" height="6" x="15" y="3" rx="1" />
+              <rect width="6" height="6" x="3" y="15" rx="1" />
+              <rect width="6" height="6" x="15" y="15" rx="1" />
+            </svg>
+            <svg
+              x-show="item.icon==='rectangle-stack'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <rect width="14" height="6" x="5" y="3" rx="2" />
+              <rect width="14" height="6" x="5" y="15" rx="2" />
+            </svg>
+            <svg
+              x-show="item.icon==='academic-cap'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 14.25v6.25m0 0c-4.418 0-8-1.79-8-4V10.5m8 10V14.25m0 6.25c4.418 0 8-1.79 8-4V10.5m-8 10V14.25m0 0L3.5 10.5m8.5 3.75l8.5-3.75M12 3l9.5 7.5-9.5 3.75L2.5 10.5 12 3z"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='presentation-chart-bar'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 3v18h18V3H3zm3 14v-4h3v4H6zm5 0v-7h3v7h-3zm5 0v-2h3v2h-3z"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='user'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 21a8.25 8.25 0 1115 0H4.5z"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='users'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-5.13a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='identification'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <rect width="18" height="14" x="3" y="5" rx="2" />
+              <path d="M7 9h2m4 0h2m-6 4h6" />
+            </svg>
+            <svg
+              x-show="item.icon==='cube'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+              />
+            </svg>
+            <svg
+              x-show="item.icon==='sparkles'"
+              class="w-5 h-5 mr-3"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364l-1.414 1.414M6.343 17.657l-1.414 1.414m12.728 0l-1.414-1.414M6.343 6.343L4.929 4.929"
+              />
+            </svg>
+            <span x-text="item.label"></span>
+          </button>
+        </template>
+      </nav>
+    </aside>
+    <!-- Main Content -->
+    <main class="flex-1 p-8 overflow-y-auto">
+      <!-- USERS -->
+      <section x-show="tab==='users'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Users</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Email
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Role
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">Jane Doe</td>
+                <td class="px-6 py-4 whitespace-nowrap">jane@example.com</td>
+                <td class="px-6 py-4 whitespace-nowrap">Admin</td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit User</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Full Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Email</label
+              >
+              <input
+                type="email"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Email"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Role</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Admin</option>
+                <option>Staff</option>
+                <option>Student</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Password</label
+              >
+              <input
+                type="password"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Password"
+              />
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View User</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name</p>
+                <p class="mt-1 text-sm text-gray-900">Jane Doe</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Email</p>
+                <p class="mt-1 text-sm text-gray-900">jane@example.com</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Role</p>
+                <p class="mt-1 text-sm text-gray-900">Admin</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Created At</p>
+                <p class="mt-1 text-sm text-gray-900">2024-01-15 10:30:00</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- DEPARTMENTS -->
+      <section x-show="tab==='departments'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Departments</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">ADM</td>
+                <td class="px-6 py-4 whitespace-nowrap">Administration</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Department</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Department Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. ADM"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Administration</option>
+                <option>Curriculum</option>
+                <option>Co Curricular</option>
+                <option>Finance</option>
+                <option>Others</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Description</label
+              >
+              <textarea
+                class="w-full border-gray-300 rounded px-3 py-2"
+                rows="2"
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Department</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Department Code</p>
+                <p class="mt-1 text-sm text-gray-900">ADM</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name</p>
+                <p class="mt-1 text-sm text-gray-900">Administration</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Description</p>
+                <p class="mt-1 text-sm text-gray-900">
+                  Handles all administrative tasks and operations
+                </p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Created At</p>
+                <p class="mt-1 text-sm text-gray-900">2024-01-15 10:30:00</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- SUBJECTS -->
+      <section x-show="tab==='subjects'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Subjects</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name (EN)
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Category
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">MAT</td>
+                <td class="px-6 py-4 whitespace-nowrap">Mathematics</td>
+                <td class="px-6 py-4 whitespace-nowrap">Core</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Subject</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Subject Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. MAT"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name (EN)</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="English Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name (TA)</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Tamil Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name (SI)</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Sinhala Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Category</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Core</option>
+                <option>Optional</option>
+                <option>Extra Curricular</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Subject</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Subject Code</p>
+                <p class="mt-1 text-sm text-gray-900">MAT</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name (EN)</p>
+                <p class="mt-1 text-sm text-gray-900">Mathematics</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name (TA)</p>
+                <p class="mt-1 text-sm text-gray-900">கணிதம்</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name (SI)</p>
+                <p class="mt-1 text-sm text-gray-900">ගණිතය</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Category</p>
+                <p class="mt-1 text-sm text-gray-900">Core</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- SECTIONS -->
+      <section x-show="tab==='sections'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Sections</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Section Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Parent
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">SEC-01</td>
+                <td class="px-6 py-4 whitespace-nowrap">Primary</td>
+                <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Section</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Section Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. SEC-01"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Parent Section</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>-</option>
+                <option>Primary</option>
+                <option>Secondary</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Section Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Description</label
+              >
+              <textarea
+                class="w-full border-gray-300 rounded px-3 py-2"
+                rows="2"
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Section</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Section Code</p>
+                <p class="mt-1 text-sm text-gray-900">SEC-01</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name</p>
+                <p class="mt-1 text-sm text-gray-900">Primary</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Parent Section</p>
+                <p class="mt-1 text-sm text-gray-900">-</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Description</p>
+                <p class="mt-1 text-sm text-gray-900">
+                  Primary education section
+                </p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- SUBSECTIONS -->
+      <section x-show="tab==='subsections'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Subsections</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Subsection Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Section
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Parent
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">SUB-01</td>
+                <td class="px-6 py-4 whitespace-nowrap">Primary</td>
+                <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap">Grade 1-5</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Subsection</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Subsection Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. SUB-01"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Section</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Primary</option>
+                <option>Secondary</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Parent Subsection</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>-</option>
+                <option>Grade 1-5</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Subsection Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Description</label
+              >
+              <textarea
+                class="w-full border-gray-300 rounded px-3 py-2"
+                rows="2"
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Subsection</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Subsection Code</p>
+                <p class="mt-1 text-sm text-gray-900">SUB-01</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Section</p>
+                <p class="mt-1 text-sm text-gray-900">Primary</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">
+                  Parent Subsection
+                </p>
+                <p class="mt-1 text-sm text-gray-900">-</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name</p>
+                <p class="mt-1 text-sm text-gray-900">Grade 1-5</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Description</p>
+                <p class="mt-1 text-sm text-gray-900">
+                  Primary grades 1 through 5
+                </p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- GRADES -->
+      <section x-show="tab==='grades'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Grades</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Grade Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Subsection
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Parent
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Order
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">G01</td>
+                <td class="px-6 py-4 whitespace-nowrap">Grade 1-5</td>
+                <td class="px-6 py-4 whitespace-nowrap">-</td>
+                <td class="px-6 py-4 whitespace-nowrap">Grade 1</td>
+                <td class="px-6 py-4 whitespace-nowrap">1</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Grade</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Grade Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. G01"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Subsection</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Grade 1-5</option>
+                <option>Grade 6-11</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Parent Grade</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>-</option>
+                <option>Grade 1</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Grade Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Order</label
+              >
+              <input
+                type="number"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Order No"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Grade</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Grade Code</p>
+                <p class="mt-1 text-sm text-gray-900">G01</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Subsection</p>
+                <p class="mt-1 text-sm text-gray-900">Grade 1-5</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Parent Grade</p>
+                <p class="mt-1 text-sm text-gray-900">-</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name</p>
+                <p class="mt-1 text-sm text-gray-900">Grade 1</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Order</p>
+                <p class="mt-1 text-sm text-gray-900">1</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- CLASSES -->
+      <section x-show="tab==='classes'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Classes</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Class Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Grade
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">C01</td>
+                <td class="px-6 py-4 whitespace-nowrap">Grade 1</td>
+                <td class="px-6 py-4 whitespace-nowrap">1A</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Class</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Class Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. C01"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Grade</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Grade 1</option>
+                <option>Grade 2</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Class Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Class Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Class</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Class Code</p>
+                <p class="mt-1 text-sm text-gray-900">C01</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Grade</p>
+                <p class="mt-1 text-sm text-gray-900">Grade 1</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Class Name</p>
+                <p class="mt-1 text-sm text-gray-900">1A</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Created At</p>
+                <p class="mt-1 text-sm text-gray-900">2024-01-15 10:30:00</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- STAFF -->
+      <section x-show="tab==='staff'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Staff</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Emp No
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Gender
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  DOB
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Appointed Subject
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Type
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Active
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">EMP-001</td>
+                <td class="px-6 py-4 whitespace-nowrap">John Smith</td>
+                <td class="px-6 py-4 whitespace-nowrap">Male</td>
+                <td class="px-6 py-4 whitespace-nowrap">1980-01-01</td>
+                <td class="px-6 py-4 whitespace-nowrap">Mathematics</td>
+                <td class="px-6 py-4 whitespace-nowrap">Permanent</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Yes</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Staff</h3>
+          <form
+            class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Emp No</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. EMP-001"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >First Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="First Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Last Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Gender</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >DOB</label
+              >
+              <input
+                type="date"
+                class="w-full border-gray-300 rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >NIC No</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="NIC No"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Appointed Subject</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Mathematics</option>
+                <option>Science</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Type of Appointment</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Permanent</option>
+                <option>Temporary</option>
+                <option>Contract</option>
+                <option>Substitute</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Photo URL</label
+              >
+              <input
+                type="url"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Photo URL"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Active</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div class="md:col-span-2 flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Staff</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Employee No</p>
+                <p class="mt-1 text-sm text-gray-900">EMP-001</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Full Name</p>
+                <p class="mt-1 text-sm text-gray-900">John Smith</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Gender</p>
+                <p class="mt-1 text-sm text-gray-900">Male</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Date of Birth</p>
+                <p class="mt-1 text-sm text-gray-900">1980-01-01</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">NIC No</p>
+                <p class="mt-1 text-sm text-gray-900">800123456V</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">
+                  Appointed Subject
+                </p>
+                <p class="mt-1 text-sm text-gray-900">Mathematics</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">
+                  Type of Appointment
+                </p>
+                <p class="mt-1 text-sm text-gray-900">Permanent</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Active Status</p>
+                <p class="mt-1 text-sm text-gray-900">Yes</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Photo</p>
+                <img
+                  src="https://via.placeholder.com/100"
+                  alt="Staff Photo"
+                  class="mt-2 h-24 w-24 rounded-lg"
+                />
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- STUDENTS -->
+      <section x-show="tab==='students'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Students</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Admission No
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Gender
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  DOB
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Guardian
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Joined
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Current Class
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">STU-001</td>
+                <td class="px-6 py-4 whitespace-nowrap">Alice Brown</td>
+                <td class="px-6 py-4 whitespace-nowrap">Female</td>
+                <td class="px-6 py-4 whitespace-nowrap">2010-05-10</td>
+                <td class="px-6 py-4 whitespace-nowrap">Mary Brown</td>
+                <td class="px-6 py-4 whitespace-nowrap">2020-01-15</td>
+                <td class="px-6 py-4 whitespace-nowrap">1A</td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Student</h3>
+          <form
+            class="bg-white shadow rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Admission No</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. STU-001"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >First Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="First Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Last Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Last Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Gender</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >DOB</label
+              >
+              <input
+                type="date"
+                class="w-full border-gray-300 rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Guardian Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Guardian Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Joined Date</label
+              >
+              <input
+                type="date"
+                class="w-full border-gray-300 rounded px-3 py-2"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Current Class</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>1A</option>
+                <option>1B</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Photo URL</label
+              >
+              <input
+                type="url"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Photo URL"
+              />
+            </div>
+            <div class="md:col-span-2 flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Student</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Admission No</p>
+                <p class="mt-1 text-sm text-gray-900">STU-001</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Full Name</p>
+                <p class="mt-1 text-sm text-gray-900">Alice Brown</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Gender</p>
+                <p class="mt-1 text-sm text-gray-900">Female</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Date of Birth</p>
+                <p class="mt-1 text-sm text-gray-900">2010-05-10</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Guardian Name</p>
+                <p class="mt-1 text-sm text-gray-900">Mary Brown</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Joined Date</p>
+                <p class="mt-1 text-sm text-gray-900">2020-01-15</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Current Class</p>
+                <p class="mt-1 text-sm text-gray-900">1A</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Photo</p>
+                <img
+                  src="https://via.placeholder.com/100"
+                  alt="Student Photo"
+                  class="mt-2 h-24 w-24 rounded-lg"
+                />
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- POSTS -->
+      <section x-show="tab==='posts'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Posts</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Post Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">PRIN</td>
+                <td class="px-6 py-4 whitespace-nowrap">Principal</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Post</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Post Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. PRIN"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Principal</option>
+                <option>Deputy Principal</option>
+                <option>Assistant Principal</option>
+                <option>Sectional Head</option>
+                <option>Subject Coordinator</option>
+                <option>Class Teacher</option>
+                <option>Subject Incharge</option>
+                <option>Club Incharge</option>
+                <option>Secretary</option>
+                <option>Treasurer</option>
+                <option>President</option>
+                <option>Vice President</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Description</label
+              >
+              <textarea
+                class="w-full border-gray-300 rounded px-3 py-2"
+                rows="2"
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Post</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Post Code</p>
+                <p class="mt-1 text-sm text-gray-900">PRIN</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name</p>
+                <p class="mt-1 text-sm text-gray-900">Principal</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Description</p>
+                <p class="mt-1 text-sm text-gray-900">
+                  Chief executive officer of the school
+                </p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Created At</p>
+                <p class="mt-1 text-sm text-gray-900">2024-01-15 10:30:00</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- RESOURCES -->
+      <section x-show="tab==='resources'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Resources</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Resource Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Type
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">RM-01</td>
+                <td class="px-6 py-4 whitespace-nowrap">Science Lab</td>
+                <td class="px-6 py-4 whitespace-nowrap">Room</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Available</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Resource</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Resource Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. RM-01"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Resource Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Type</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Room</option>
+                <option>Equipment</option>
+                <option>Vehicle</option>
+                <option>Facility</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Description</label
+              >
+              <textarea
+                class="w-full border-gray-300 rounded px-3 py-2"
+                rows="2"
+                placeholder="Description"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Location</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Location"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Available</option>
+                <option>In Use</option>
+                <option>Maintenance</option>
+                <option>Retired</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Capacity</label
+              >
+              <input
+                type="number"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Capacity"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Photo URL</label
+              >
+              <input
+                type="url"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Photo URL"
+              />
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Resource</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Resource Code</p>
+                <p class="mt-1 text-sm text-gray-900">RM-01</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name</p>
+                <p class="mt-1 text-sm text-gray-900">Science Lab</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Type</p>
+                <p class="mt-1 text-sm text-gray-900">Room</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Available</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Location</p>
+                <p class="mt-1 text-sm text-gray-900">Building A, 2nd Floor</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Capacity</p>
+                <p class="mt-1 text-sm text-gray-900">40</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Description</p>
+                <p class="mt-1 text-sm text-gray-900">
+                  Fully equipped science laboratory with modern equipment
+                </p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Photo</p>
+                <img
+                  src="https://via.placeholder.com/200x150"
+                  alt="Resource Photo"
+                  class="mt-2 rounded-lg"
+                />
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- CLUBS -->
+      <section x-show="tab==='clubs'" x-cloak>
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-800">Clubs</h2>
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+            Create
+          </button>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Club Code
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Name (EN)
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Status
+                </th>
+                <th class="px-6 py-3"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr>
+                <td class="px-6 py-4 whitespace-nowrap">CLB-01</td>
+                <td class="px-6 py-4 whitespace-nowrap">Science Club</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800"
+                    >Active</span
+                  >
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"
+                >
+                  <button class="text-blue-600 hover:underline mr-2">
+                    Edit
+                  </button>
+                  <button class="text-red-600 hover:underline">Delete</button>
+                </td>
+              </tr>
+              <!-- ... -->
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">Create / Edit Club</h3>
+          <form class="bg-white shadow rounded-lg p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Club Code</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="e.g. CLB-01"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name (EN)</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="English Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name (TA)</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Tamil Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Name (SI)</label
+              >
+              <input
+                type="text"
+                class="w-full border-gray-300 rounded px-3 py-2"
+                placeholder="Sinhala Name"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Job Profile</label
+              >
+              <textarea
+                class="w-full border-gray-300 rounded px-3 py-2"
+                rows="2"
+                placeholder="Job Profile"
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Status</label
+              >
+              <select class="w-full border-gray-300 rounded px-3 py-2">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- View Page -->
+        <div class="mt-10 max-w-2xl">
+          <h3 class="text-xl font-semibold mb-4">View Club</h3>
+          <div class="bg-white shadow rounded-lg p-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <p class="text-sm font-medium text-gray-500">Club Code</p>
+                <p class="mt-1 text-sm text-gray-900">CLB-01</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name (EN)</p>
+                <p class="mt-1 text-sm text-gray-900">Science Club</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name (TA)</p>
+                <p class="mt-1 text-sm text-gray-900">அறிவியல் கழகம்</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Name (SI)</p>
+                <p class="mt-1 text-sm text-gray-900">විද්‍යා සමාජය</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-sm font-medium text-gray-500">Job Profile</p>
+                <p class="mt-1 text-sm text-gray-900">
+                  Promote science education and organize science-related
+                  activities
+                </p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Status</p>
+                <p class="mt-1 text-sm text-gray-900">Active</p>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Created At</p>
+                <p class="mt-1 text-sm text-gray-900">2024-01-15 10:30:00</p>
+              </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+              <button
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Relation Managers -->
+        <div class="mt-10">
+          <h4 class="text-lg font-semibold mb-2">Club Staff</h4>
+          <div class="bg-gray-50 border rounded-lg p-4 mb-6">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    Staff
+                  </th>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    Role
+                  </th>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    From
+                  </th>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    To
+                  </th>
+                  <th class="px-4 py-2"></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr>
+                  <td class="px-4 py-2">John Smith</td>
+                  <td class="px-4 py-2">Coordinator</td>
+                  <td class="px-4 py-2">2022-01-01</td>
+                  <td class="px-4 py-2">2023-12-31</td>
+                  <td class="px-4 py-2 text-right">
+                    <button class="text-blue-600 hover:underline mr-2">
+                      Edit
+                    </button>
+                    <button class="text-red-600 hover:underline">Remove</button>
+                  </td>
+                </tr>
+                <!-- ... -->
+              </tbody>
+            </table>
+            <button
+              class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Add Staff
+            </button>
+          </div>
+          <h4 class="text-lg font-semibold mb-2">Club Students</h4>
+          <div class="bg-gray-50 border rounded-lg p-4">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    Student
+                  </th>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    Role
+                  </th>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    From
+                  </th>
+                  <th
+                    class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase"
+                  >
+                    To
+                  </th>
+                  <th class="px-4 py-2"></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr>
+                  <td class="px-4 py-2">Alice Brown</td>
+                  <td class="px-4 py-2">President</td>
+                  <td class="px-4 py-2">2022-01-01</td>
+                  <td class="px-4 py-2">2023-12-31</td>
+                  <td class="px-4 py-2 text-right">
+                    <button class="text-blue-600 hover:underline mr-2">
+                      Edit
+                    </button>
+                    <button class="text-red-600 hover:underline">Remove</button>
+                  </td>
+                </tr>
+                <!-- ... -->
+              </tbody>
+            </table>
+            <button
+              class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Add Student
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,150 @@
+Hierarchy: System → Domain → Module(table) → Fields
+
+All tables inherit audit & timestamp fields: created_by, updated_by, deleted_by, created_at, updated_at, deleted_at, soft_delete.
+
+Domain 1: School [REFINED]
+schools (table: schools, pk: school_no)
+    school_no (PK, VARCHAR(50)), school_census_no (UNIQUE), 
+    school_name_en (TEXT), school_name_ta (TEXT), school_name_si (TEXT), 
+    school_type (ENUM: '1AB','1C','type21','type2'), 
+    school_category (ENUM: 'national','province','private','semigovernment'), 
+    division, zone, district, province, 
+    address (TEXT), phone, email, website, 
+    established_year (DATE)
+    
+school_visions (table: school_visions, composite_pk: school_no + year)
+    school_no (PK, FK→schools.school_no), year (PK, YEAR),
+    vision_en (TEXT), vision_ta (TEXT), vision_si (TEXT), 
+    mission_en (TEXT), mission_ta (TEXT), mission_si (TEXT), 
+    motto_en (TEXT), motto_ta (TEXT), motto_si (TEXT), 
+    logo_url, geo_lat (DECIMAL 10,8), geo_lng (DECIMAL 11,8), school_map_url
+    
+Relationship: schools 1→∞ school_visions (One school has many visions across years)
+
+Domain 2: Master
+staff: (
+    emp_no, first_name, last_name, gender, dob, nic_no, 
+    appointed_subject, type_of_appointment, photo_url, is_active
+student: (
+    admission_no, first_name, last_name, gender, dob,guardian_name,
+    joint_date, class_code, photo_url)
+department:(
+    department_code
+    name<administration,curriculum,co_curriculam,others,Finance>, description, 
+    status
+post: (
+    post_code, 
+    name<principal,deputy_principal,assistant_principal,sectional_head
+    subject_coordinator,class_teacher,subject_incharge,club_incharge
+    secretory,treasure,president,vice_president>
+    description, status )
+
+resource:(
+    resource_code, name, description, type, location, status, capacity, photo_url 
+school_org_structure: org_unit_code, name <section,grade,class,lab> 
+school_class_structure: section_code, subsection_code, grade_code, 
+class_code, class_name, ) 
+clubs :(club_code_name_ta,code_name_en,code_name_si,job_profile)
+routines :(routine_code,routine_name_ta,routine_name_en,routine_name_si
+            belongs_to<admin,curriculum,co_curriculam,others>,type<daily,weekly,monthly,termly,annually>)
+subject : ()
+Domain 15: Reporting
+
+dimensions: dim_date, dim_class, dim_subject, dim_staff, dim_student, dim_team, dim_lab, dim_book
+facts: fact_attendance_student, fact_attendance_staff, fact_timetable_utilization, fact_substitutions, fact_exam_results, fact_library_issuance, fact_lab_usage, fact_fees, fact_procurement
+exports: report_def_code, name, description, template_path, schedule_cron, last_run_at
+
+Domain 3: Plan 
+    kpis:(kpi_code, name_en, name_ta, name_si, unit ) 
+    data_sources: ( data_source_code, name_en, name_ta, name_si, description)
+    risks: risk_code, name_en, name_ta, name_si, category, description
+    thrust_areas: code, title_en, title_ta, title_si, description
+    components: thrust_area_code, code, title_en, title_ta, title_si, description
+    impacts: component_code, code, title_en, title_ta, title_si
+    outcomes: impact_code, code, title_en, title_ta, title_si, kpi_code, data_source_code, risk_code
+    outputs: outcome_code, code, title_en, title_ta, title_si, kpi_code, data_source_code, risk_code
+    activities: output_code, code, title_en, title_ta, title_si, kpi_code, data_source_code, risk_code, expense_code, income_code, responsibility
+
+Domain 12: Finance
+fee_structure: fee_code, grade_code, title, amount, frequency, term, year
+fee_payments: receipt_no, student_admission_no, fee_code, amount, date, method, reference_no
+transactions: txn_code, type(Income/Expense), ledger_code, amount, date, payee_payer, ref
+ledgers_budgets: ledger_code, name, year, budget_amount, actual_amount
+procurement_requests: pr_code, department_code, item_desc, est_amount, need_date, status
+quotations_pos: doc_code, pr_code, vendor, amount, date, status
+store_inventory: item_code, name, unit, qty_on_hand, reorder_level, location
+
+Domain 4: Administration
+    assign_employee :(employee_reg_no,year,pin)
+    assign_duty: (employye_code,duty_code, post)
+    assign_class_teacher(employee_code,year,class,year)
+    assign_subject_group (group_code,group_name,year) 
+    assign_subject_class (class_code,subject_code) 
+    assign_subject_period (subject_code,period_per_week,year)
+    assign_period_time_slot (period_code,start_time,end_time,year) 
+    assign_teacher_subject_class (employee_code,subject_code,class_code,year) 
+    timetable (class_code,subject_code,period,week,employee_code)   
+    event (event_code,description,date,time,responsibility)
+    daily_substitution: date, class_code, period_no, original_staff, substitute_staff, reason
+
+Domain 5: curriculum-implementation 
+    daily_periods_complete (class_code,date,period,is_conducted) 
+    
+Domain 6: Attendance
+student_attendance_daily: date, class_code, student_admission_no, status, reason
+student_attendance_period: date, class_code, period_no, subject_code, student_admission_no, status
+staff_attendance: date, staff_emp_no, status, in_time, out_time, remarks
+leave_types: leave_type_code, title, yearly_quota, allow_half_day
+leave_requests: staff_emp_no, leave_type_code, from_date, to_date, days, reason, status, approved_by
+
+Domain 7: Academic
+curriculum_map: grade_code, subject_code, unit_code, subunit_code, order_no
+learning_outcomes: lo_code, grade_code, subject_code, level, title_en, title_ta, title_si
+lesson_plans: plan_code, class_code, subject_code, week_no, objectives, activities, materials, assessment, term, year
+assignments: assign_code, class_code, subject_code, title, due_date, max_marks, file_url
+
+Domain 8: Examinations
+question_bank: qb_code, subject_code, stem_html, difficulty, type, tags, answer_key, marks, figure_url
+exam_papers: paper_code, grade_code, subject_code, term, year, duration_min, total_marks, layout_profile
+paper_sections: paper_code, section_code, title, order_no, marks
+exam_schedule: exam_code, grade_code, subject_code, date, start_time, end_time, room_code, invigilator_emp_no
+exam_results: exam_code, student_admission_no, subject_code, marks, grade, remark
+progress_report_issue: student_admission_no, term, year, overall_grade, class_position, comments
+
+Domain 9: Evaluation
+seqi_domains: domain_code, indicator_code, descriptor, kpi_code, rubric_ref
+evaluation_scores: year, indicator_code, score, evidence_url, reviewer
+competitions: event_code, name, level, date, category
+competition_entries: event_code, team_code_or_student, result, coach_emp_no
+
+Domain 10: Co‑Curricular
+sports: sport_code, name
+teams: team_code, sport_code, level, coach_emp_no
+team_members: team_code, student_admission_no, role, from_date, to_date
+fixtures: team_code, date, opponent, venue, result, score_for, score_against
+training_sessions: team_code, date, focus, attendance_total, notes
+injuries: student_admission_no, sport_code, from_date, to_date, notes
+projects_clubs: project_code, name, owner_emp_no, start_date, end_date, status, budget
+
+Domain 11: Resources
+library_items: acc_no, isbn, title, author, subject_code, medium, shelf, status
+library_members: member_id, type(Student/Staff), student_admission_no, staff_emp_no
+library_loans: acc_no, member_id, issued_on, due_on, returned_on, fine_amount
+labs: lab_code, type(Science/ICT), capacity, room_code
+lab_bookings: lab_code, date, period_no, class_code, subject_code, staff_emp_no, status
+lab_practicals: practical_code, subject_code, title, risk_level
+lab_runs: date, practical_code, class_code, staff_emp_no, outcome, notes
+lab_inventory: item_code, name, qty, min_qty, location, unit
+lab_maintenance: lab_code_or_item_code, date, task, status, vendor
+
+Domain 13: Welfare
+health_medical: student_admission_no, date, condition, treatment, notes
+discipline_counselling: student_admission_no, date, incident, action, counselor_emp_no
+scholarships: scholarship_code, student_admission_no, type, amount, from_date, to_date
+services: service_code, type(Transport/Hostel/Canteen), student_admission_no, plan, fee, route_or_room
+
+Domain 14: Portal & Communication
+circulars_portal: circular_code, title, body_html, audience, publish_date, expiry_date
+notifications: to_role_or_user, subject, body, channel(SMS/Email/App), sent_at, status
+portal_accounts: user_id, role(Student/Parent), linked_admission_no_or_guardian_id, last_login_at
+
