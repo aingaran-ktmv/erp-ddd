@@ -1,0 +1,49 @@
+Admin credentials
+
+Email: test@example.com
+Password: password
+
+Admin login URL: /admin/login
+
+Note: These are the default seeded credentials from DatabaseSeeder/UserFactory (dev only).
+
+Project Architect
+Gemini 2.5 Pro
+Planning and creating the detailed blueprint.
+
+Senior Developer
+GPT-5-Codex
+Writing the core, complex PHP code.
+
+Junior Developer
+Grok Code Fast 1
+Scaffolding the repetitive UI schema files.
+
+Automation Script
+Claude Haiku 4.5
+Creating simple boilerplate files (Policy, Importer).
+
+Team Lead / QA
+GPT-5
+Reviewing all generated code for quality and compliance.
+
+You are a UI/UX design expert specializing in Filament 4 and Tailwind CSS. Your task is to refactor an existing Filament resource for a School model to make it more professional, organized, and visually appealing, based on user-provided screenshots and a new design policy.
+
+1. Design Policy:
+Color Theme: The new theme is "Modern Mint & Slate". The primary color for the admin panel MUST be set to Color::Green.
+
+2. Layout Principles: Forms and Infolists MUST be organized into logical groups using Section and Grid components. Do not use a single long list of fields.
+
+3. Clarity and Labels: All form fields and infolist entries must have clear, human-readable labels.
+
+4. Visual Cues: Use BadgeColumn in the table to make categorical data easier to scan.
+
+Your Task:
+Generate the complete code for the following five (6) files, one by one. Adhere strictly to the design policy. Announce each file with its full path before providing the code block.
+
+1. AdminPanelProvider.php,
+2. CreateSchool.php
+3. EditSchool.php
+4. SchoolForm.php
+5. SchoolsTable.php
+6. SchoolInfolist.php,

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\SchoolSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,9 +18,19 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Ensure a default dev user exists (idempotent)
+        User::updateOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => 'password', // casted to hashed in User model
+                'email_verified_at' => now(),
+            ]
+        );
+
+        // Seed dummy schools
+        $this->call([
+            SchoolSeeder::class,
         ]);
     }
 }
